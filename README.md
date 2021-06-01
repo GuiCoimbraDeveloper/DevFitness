@@ -1,7 +1,7 @@
 # DevFitness
 
 ## Descrição do Projeto
-<p>projeto rest API para venda de carros. O projeto foi criado usando o ASPNET 5</p>
+<p>projeto rest API para controlar sua saude. O projeto foi criado usando o ASPNET 5</p>
 
 ### 🛠 Tecnologias
 
