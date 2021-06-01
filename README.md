@@ -1,7 +1,7 @@
 # DevFitness
 
 ## Descrição do Projeto
-<p>projeto rest API para controlar sua saude. O projeto foi criado usando o ASPNET 5</p>
+<p>projeto rest API para controlar sua saude. O projeto foi criado usando o ASPNET 5 e contem padrão repository, injeção de dependencia</p>
 
 ### 🛠 Tecnologias
 
@@ -10,7 +10,6 @@
 - [C#](https://docs.microsoft.com/pt-br/dotnet/csharp/) ![Badge](https://img.shields.io/badge/ASPNET-5-blue) ![Badge](https://img.shields.io/badge/DTO-blue)
 - ![Badge](https://img.shields.io/badge/EntityFrameworkCore-5-blue) ![Badge](https://img.shields.io/badge/SQLServer-blue) ![Badge](https://img.shields.io/badge/Swagger-blue)
 - ![Badge](https://img.shields.io/badge/Swagger-orange)  ![Badge](https://img.shields.io/badge/AutoMapper-green) 
-
 
 ### Pré-requisitos
 
