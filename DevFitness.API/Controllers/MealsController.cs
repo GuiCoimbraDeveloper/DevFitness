@@ -1,4 +1,5 @@
-﻿using DevFitness.API.Core.Entities;
+﻿using AutoMapper;
+using DevFitness.API.Core.Entities;
 using DevFitness.API.Models.InputModels;
 using DevFitness.API.Models.ViewModels;
 using DevFitness.API.Persistencia;
@@ -15,9 +16,11 @@ namespace DevFitness.API.Controllers
     public class MealsController : Controller
     {
         private readonly DevFitnessDbContext _dbContext;
-        public MealsController(DevFitnessDbContext dbContext)
+        private readonly IMapper _mapper;
+        public MealsController(DevFitnessDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -38,14 +41,16 @@ namespace DevFitness.API.Controllers
             if (meal == null)
                 return NotFound();
 
-            var mealViewModel = new MealViewModels(meal.Id, meal.Description, meal.Calories, meal.Date);
+            //var mealViewModel = new MealViewModels(meal.Id, meal.Description, meal.Calories, meal.Date);
+            var mealViewModel = _mapper.Map<MealViewModels>(meal);
             return Ok(mealViewModel);
         }
 
         [HttpPost]
         public IActionResult Post(int userId, [FromBody] CreateMealInputModel inputModel)
         {
-            var meal = new Meal(inputModel.Description, inputModel.Calories, inputModel.Date, userId);
+            //var meal = new Meal(inputModel.Description, inputModel.Calories, inputModel.Date, userId);
+            var meal = _mapper.Map<Meal>(inputModel);
             _dbContext.Meals.Add(meal);
             _dbContext.SaveChanges();
 

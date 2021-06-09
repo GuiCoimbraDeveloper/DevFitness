@@ -1,7 +1,9 @@
-﻿using DevFitness.API.Core.Entities;
+﻿using AutoMapper;
+using DevFitness.API.Core.Entities;
 using DevFitness.API.Models.InputModels;
 using DevFitness.API.Models.ViewModels;
 using DevFitness.API.Persistencia;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,10 +17,20 @@ namespace DevFitness.API.Controllers
     public class UsersController : Controller
     {
         private readonly DevFitnessDbContext _dbContext;
-        public UsersController(DevFitnessDbContext dbContext)
+        private readonly IMapper _mapper;
+        public UsersController(DevFitnessDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
+
+        /// <summary>
+        /// Retorna detalhes de usuario
+        /// </summary>
+        /// <param name="id">Identificador de usuário</param>
+        /// <returns>Objeto de detalhes de usuário.</returns>
+        /// <response code="200">Usuario encontrado com sucesso</response>
+        /// <response code="404">Usuario não encontrado.</response>
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -26,14 +38,33 @@ namespace DevFitness.API.Controllers
             if (users == null)
                 return NotFound();
 
-            var userViewModel = new UserViewModel(users.Id, users.FullName, users.Height, users.Weight, users.BirthDate);
+            var userViewModel = _mapper.Map<UserViewModel>(users);
             return Ok(userViewModel);
         }
 
+        /// <summary>
+        /// Cadastrar um usuario
+        /// </summary>
+        /// <param name="inputModel">Objeto com dados de cadastro de usuario</param>
+        /// <remarks>
+        /// Requisição de exemplo:
+        /// {
+        /// "FullName":"Gui",
+        /// "Height": 1.87,
+        /// "Weight":90,
+        /// "BirthDate":"1996-03-27 00:00:00"
+        /// }
+        /// </remarks>
+        /// <returns>Objeto recem-criado.</returns>
+        /// <response code="201">Objeto criado com sucesso.</response>
+        /// <response code="400">Dados invalidos.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Post([FromBody] CreateUserInputModel inputModel)
         {
-            var user = new User(inputModel.FullName, inputModel.Height, inputModel.Weight, inputModel.BirthDate);
+            //var user = new User(inputModel.FullName, inputModel.Height, inputModel.Weight, inputModel.BirthDate);
+            var user = _mapper.Map<User>(inputModel);
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
 
